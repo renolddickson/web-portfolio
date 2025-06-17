@@ -1,162 +1,227 @@
-import { ExternalLink, Github } from "lucide-react";
+'use client';
+import { useEffect, useRef } from 'react';
+import { ExternalLink, Github } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const Projects = ({ visibleSections }) => {
-  const projects = [
-    {
-      id: 1,
-      title: 'E-Commerce Platform',
-      stages: [
-        { name: 'Project Research', category: 'Development', status: 'Completed' },
-        { name: 'Moodboard', category: 'Design', status: 'Completed' },
-        { name: 'User Flow', category: 'Design', status: 'Completed' },
-        { name: 'Wireframe', category: 'Design', status: 'Completed' },
-        { name: 'UI Design', category: 'Design', status: 'In Progress' },
-        { name: 'Design System', category: 'Design', status: 'Pending' },
-        { name: 'Prototype', category: 'Design', status: 'Pending' },
-        { name: 'HTML', category: 'Development', status: 'Pending' }
-      ],
-      description: 'Full-stack e-commerce solution with modern UI/UX',
-      tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-      type: 'Web Application'
-    },
-    {
-      id: 2,
-      title: 'Design System',
-      stages: [
-        { name: 'Project Research', category: 'Design', status: 'Completed' },
-        { name: 'Moodboard', category: 'Design', status: 'Completed' },
-        { name: 'User Flow', category: 'Design', status: 'In Progress' },
-        { name: 'Wireframe', category: 'Design', status: 'Pending' },
-        { name: 'UI Design', category: 'Design', status: 'Pending' },
-        { name: 'Design System', category: 'Design', status: 'Pending' },
-        { name: 'Prototype', category: 'Design', status: 'Pending' },
-        { name: 'HTML', category: 'Development', status: 'Pending' }
-      ],
-      description: 'Comprehensive design system for enterprise applications',
-      tech: ['Figma', 'React', 'Storybook', 'Tokens'],
-      type: 'Design System'
-    },
-    {
-      id: 3,
-      title: 'Mobile Banking App',
-      stages: [
-        { name: 'Project Research', category: 'Development', status: 'Completed' },
-        { name: 'Moodboard', category: 'Design', status: 'Completed' },
-        { name: 'User Flow', category: 'Design', status: 'Completed' },
-        { name: 'Wireframe', category: 'Design', status: 'Completed' },
-        { name: 'UI Design', category: 'Design', status: 'Completed' },
-        { name: 'Design System', category: 'Design', status: 'In Progress' },
-        { name: 'Prototype', category: 'Design', status: 'Pending' },
-        { name: 'HTML', category: 'Development', status: 'Pending' }
-      ],
-      description: 'Secure mobile banking application with biometric auth',
-      tech: ['React Native', 'Firebase', 'TypeScript'],
-      type: 'Mobile App'
-    },
-    {
-      id: 4,
-      title: 'Analytics Dashboard',
-      stages: [
-        { name: 'Project Research', category: 'Development', status: 'Completed' },
-        { name: 'Moodboard', category: 'Design', status: 'Completed' },
-        { name: 'User Flow', category: 'Design', status: 'Completed' },
-        { name: 'Wireframe', category: 'Design', status: 'Completed' },
-        { name: 'UI Design', category: 'Design', status: 'Completed' },
-        { name: 'Design System', category: 'Design', status: 'Completed' },
-        { name: 'Prototype', category: 'Design', status: 'Completed' },
-        { name: 'HTML', category: 'Development', status: 'In Progress' }
-      ],
-      description: 'Real-time analytics dashboard with interactive charts',
-      tech: ['Vue.js', 'D3.js', 'Python', 'PostgreSQL'],
-      type: 'Web Application'
-    }
-  ];
+gsap.registerPlugin(ScrollTrigger);
+
+interface Project {
+  title: string;
+  description: string;
+  tech: string[];
+  color: string;
+}
+
+const projects: Project[] = [
+  {
+    title: 'E-Commerce Platform',
+    description: 'Full-stack e-commerce solution with modern UI/UX',
+    tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+    color: '#34D399',
+  },
+  {
+    title: 'Design System',
+    description: 'Comprehensive design system for enterprise apps',
+    tech: ['Figma', 'React', 'Storybook'],
+    color: '#F472B6',
+  },
+  {
+    title: 'Mobile Banking App',
+    description: 'Secure mobile banking application with biometric auth',
+    tech: ['React Native', 'Firebase'],
+    color: '#60A5FA',
+  },
+  {
+    title: 'Analytics Dashboard',
+    description: 'Real-time dashboard with charts',
+    tech: ['Vue.js', 'D3.js'],
+    color: '#FBBF24',
+  },
+];
+
+const Projects: React.FC = () => {
+  const containerRef = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !headerRef.current || !svgRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.card');
+      const header = headerRef.current;
+      const containerBounds = containerRef.current.getBoundingClientRect();
+      const headerBounds = header.getBoundingClientRect();
+
+      const root = {
+        x: headerBounds.left + headerBounds.width / 2 - containerBounds.left,
+        y: headerBounds.top + headerBounds.height / 2 - containerBounds.top,
+      };
+
+      // Animate header
+      gsap.fromTo(
+        header,
+        { opacity: 0, y: -50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        },
+      );
+
+      // Animate central node
+      gsap.fromTo(
+        '.central-node',
+        { scale: 0 },
+        {
+          scale: 1,
+          duration: 0.8,
+          ease: 'elastic.out(1, 0.5)',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+        },
+      );
+
+      // Animate curved paths and cards
+      cards.forEach((card, i) => {
+        const path = `.path-${i}`;
+        const el = card;
+
+        const cardBounds = el.getBoundingClientRect();
+        const cardCenter = {
+          x: cardBounds.left + cardBounds.width / 2 - containerBounds.left,
+          y: cardBounds.top + cardBounds.height / 2 - containerBounds.top,
+        };
+
+        // Create curved path using quadratic Bezier
+        const controlPoint = {
+          x: root.x + (cardCenter.x - root.x) * 0.5,
+          y: root.y + (cardCenter.y - root.y) * 0.7,
+        };
+
+        const pathD = `M${root.x},${root.y} Q${controlPoint.x},${controlPoint.y} ${cardCenter.x},${cardCenter.y}`;
+
+        // Set initial path
+        gsap.set(path, { attr: { d: `M${root.x},${root.y} Q${controlPoint.x},${controlPoint.y} ${root.x},${root.y}` } });
+
+        // Animate path
+        gsap.to(path, {
+          attr: { d: pathD },
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            once: true,
+          },
+          delay: i * 0.2,
+        });
+
+        // Card reveal animation
+        gsap.fromTo(
+          el,
+          { opacity: 0, scale: 0.7, y: 50 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 80%',
+              once: true,
+            },
+            delay: i * 0.2 + 0.3,
+          },
+        );
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="projects" className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Featured Projects</h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            A collection of work that showcases my expertise and creativity
-          </p>
-        </div>
+    <section id="projects" className="relative bg-gray-50 py-24 overflow-hidden" ref={containerRef}>
+      <svg
+        ref={svgRef}
+        className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
+      >
+        <circle
+          className="central-node"
+          cx={containerRef.current?.getBoundingClientRect().width / 2 || 0}
+          cy="100"
+          r="10"
+          fill="#10B981"
+        />
+        {projects.map((_, i) => (
+          <path
+            key={i}
+            className={`path-${i}`}
+            stroke="#D1D5DB"
+            strokeWidth="2"
+            fill="none"
+          />
+        ))}
+      </svg>
 
-        {/* Desktop: 4 cards per row, Tablet: 2 cards, Mobile: 1 card */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className={`group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-xl transition-all duration-500 border border-gray-100 ${visibleSections.has('projects')
-                  ? 'translate-y-0 opacity-100'
-                  : 'translate-y-12 opacity-0'
-                }`}
-              style={{ transitionDelay: `${index * 150}ms` }}
-            >
-              {/* Project Header */}
-              <div className="flex items-start justify-between mb-4 sm:mb-6">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${project.category === 'Design' ? 'bg-red-500' :
-                      project.category === 'Development' ? 'bg-green-500' : 'bg-blue-500'
-                    }`}></div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-600">{project.category}</span>
-                </div>
-                <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${project.status === 'Live' ? 'bg-green-100 text-green-700' :
-                    project.status === 'In Development' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-blue-100 text-blue-700'
-                  }`}>
-                  {project.status}
-                </div>
-              </div>
+      <div className="text-center mb-16 relative z-10" ref={headerRef}>
+        <h2 className="text-5xl font-bold text-gray-900 tracking-tight">
+          Featured Projects
+        </h2>
+        <p className="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">
+          Explore a collection of innovative projects showcasing creativity and technical excellence
+        </p>
+      </div>
 
-              {/* Project Content */}
-              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
-                  {project.title}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3">
-                  {project.description}
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500">{project.type}</p>
-              </div>
-
-              {/* Tech Stack */}
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
-                {project.tech.slice(0, 3).map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm font-medium"
-                  >
-                    {tech}
-                  </span>
-                ))}
-                {project.tech.length > 3 && (
-                  <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs sm:text-sm">
-                    +{project.tech.length - 3}
-                  </span>
-                )}
-              </div>
-
-              {/* Project Actions */}
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                <button className="flex-1 bg-gray-900 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 font-medium text-sm sm:text-base">
-                  <span className="hidden sm:inline">View Project</span>
-                  <span className="sm:hidden">View</span>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                </button>
-                <button className="sm:w-auto w-full p-2.5 sm:p-3 border border-gray-200 rounded-lg sm:rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center">
-                  <Github className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                </button>
-              </div>
-
-              {/* Decorative Elements */}
-              <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 w-8 sm:w-12 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto relative z-10">
+        {projects.map((project, i) => (
+          <div
+            key={i}
+            className="card bg-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300"
+            style={{ borderLeft: `4px solid ${project.color}` }}
+          >
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">{project.title}</h3>
+            <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.tech.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
+            <div className="flex gap-3">
+              <a
+                href="#"
+                className="flex-1 bg-gray-900 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm hover:bg-gray-800 transition-colors"
+              >
+                View Project <ExternalLink className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Github className="w-5 h-5 text-gray-700" />
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
+
 export default Projects;

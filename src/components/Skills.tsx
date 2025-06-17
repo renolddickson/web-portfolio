@@ -1,4 +1,4 @@
-const Skills = ({ visibleSections }) =>{
+const Skills = () =>{
    const skills = [
         { name: 'Frontend Development', progress: 95, category: 'Development' },
         { name: 'Backend Development', progress: 90, category: 'Development' },
@@ -21,7 +21,7 @@ return (
                 <div
                   key={skill.name}
                   className={`group p-6 lg:p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-500 ${
-                    visibleSections.has('skills') 
+                   true
                       ? 'translate-y-0 opacity-100' 
                       : 'translate-y-8 opacity-0'
                   }`}
@@ -38,7 +38,7 @@ return (
                     <div
                       className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-1000 ease-out"
                       style={{ 
-                        width: visibleSections.has('skills') ? `${skill.progress}%` : '0%',
+                        width: true ? `${skill.progress}%` : '0%',
                         transitionDelay: `${index * 100 + 300}ms`
                       }}
                     ></div>
