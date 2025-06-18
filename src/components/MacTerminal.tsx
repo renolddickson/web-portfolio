@@ -54,9 +54,9 @@ const MacTerminal = () => {
     });
     return (
         <div className="p-10 min-h-screen flex items-center justify-center font-mono">
-            <div className="bg-white rounded-lg w-full max-w-4xl h-112 mx-auto shadow-2xl overflow-hidden">
+            <div className="bg-white rounded-lg w-full max-w-4xl min-h-112 mx-auto shadow-2xl overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between h-16 border-b border-gray-300 px-6 bg-gray-200">
+                <div className="flex items-center justify-between h-8 border-b border-gray-300 px-6 bg-gray-200">
                     {/* Window Controls */}
                     <div className="flex items-center space-x-3">
                         <div className="w-3.5 h-3.5 rounded-full bg-red-500 border border-red-600"></div>
