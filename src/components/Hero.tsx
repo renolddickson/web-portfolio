@@ -1,6 +1,8 @@
+import { scrollToSection } from "../utils/utils";
+
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden pt-12" id="home">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center py-8 md:py-16 min-h-[80vh] z-10 relative">
           <div className="w-full md:w-1/2 space-y-4 md:space-y-6">
@@ -14,7 +16,7 @@ const Hero = () => {
               Software Developer
             </p>
             <div className="flex space-x-4 pt-4">
-              <button className="group relative px-6 py-2 border border-black bg-black text-white rounded-full transition duration-300 overflow-hidden cursor-pointer">
+              <button className="group relative px-6 py-2 border border-black bg-black text-white rounded-full transition duration-300 overflow-hidden cursor-pointer" onClick={() => scrollToSection('contact')}>
                 <div className="transition-transform duration-300 group-hover:-translate-y-8">
                   HIRE ME
                 </div>

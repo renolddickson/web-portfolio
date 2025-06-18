@@ -3,3 +3,10 @@
 body{
     scrollbar-gutter: stable;
 }
+
+@layer utilities {
+    @keyframes blink {
+      0%, 100% { visibility: visible; }
+      50%      { visibility: hidden; }
+    }
+  }
