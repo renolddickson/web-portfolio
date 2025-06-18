@@ -53,10 +53,9 @@ const MacTerminal = () => {
         hour12: false      // 24‑hour format
     });
     return (
-        <div className="p-10 min-h-screen flex items-center justify-center font-mono">
-            <div className="bg-white rounded-lg w-full max-w-4xl min-h-112 mx-auto shadow-2xl overflow-hidden">
+            <div className="relative bg-white rounded-lg w-full max-w-4xl mx-auto shadow-2xl overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between h-8 border-b border-gray-300 px-6 bg-gray-200">
+                <div className="flex items-center justify-between h-8 border-b border-gray-300 px-6 bg-gray-200 sticky top-0">
                     {/* Window Controls */}
                     <div className="flex items-center space-x-3">
                         <div className="w-3.5 h-3.5 rounded-full bg-red-500 border border-red-600"></div>
@@ -68,7 +67,7 @@ const MacTerminal = () => {
                     </div>
                     <div className="w-14"></div>
                 </div>
-                <div className="p-8 text-sm text-gray-800 bg-white">
+                <div className="p-8 text-sm text-gray-800 bg-white h-112 overflow-auto">
                     <div className="mb-2">
                         <span>Last login: {formatter.format(date)} on ttys003</span>
                     </div>
@@ -92,7 +91,6 @@ const MacTerminal = () => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 };
 
