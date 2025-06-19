@@ -1,30 +1,44 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+gsap.registerPlugin(ScrollTrigger);
 const MacTerminal = ({content}:{content:string}) => {
     const [typed,setTyped]= useState(false);
     const aboutcontent = useRef<HTMLDivElement | null>(null);
     const date = new Date();
     useLayoutEffect(() => {
         const el = aboutcontent.current;
-        if (!el) return;
+        if (!el || typed) return;
     
-        let index = 0;
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              let index = 0;
+              el.textContent = ''; // Clear before typing
     
-        const type = () => {
-          if (index < content.length) {
-            el.textContent += content[index];
-            index++;
-            setTimeout(type, 15); // Speed here 👈 tweak it
+              const type = () => {
+                if (index < content.length) {
+                  el.textContent += content[index];
+                  index++;
+                  setTimeout(type, 15);
+                }
+              };
+    
+              type(); // start typing
+              setTyped(true);
+              observer.unobserve(el); // Stop watching once triggered
+            }
+          },
+          {
+            threshold: 0.5, // 50% visible
           }
-        };
+        );
     
-        const timeout = setTimeout(()=>{
-            type();
-            setTyped(true)
-        }, 3000); // Delay before typing starts
+        observer.observe(el);
     
-        return () => clearTimeout(timeout);
-      }, []);
+        return () => observer.disconnect();
+      }, [typed, content]);
     const formatter = new Intl.DateTimeFormat('en-US', {
         weekday: 'short',  // e.g. Thu
         year: 'numeric',   // 2025
@@ -36,7 +50,7 @@ const MacTerminal = ({content}:{content:string}) => {
         hour12: false      // 24‑hour format
     });
     return (
-            <div className="relative bg-white rounded-lg w-full max-w-4xl mx-auto shadow-2xl overflow-hidden">
+            <div className="relative bg-white rounded-lg w-4xl mx-auto shadow-2xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between h-8 border-b border-gray-300 px-6 bg-gray-200 sticky top-0">
                     {/* Window Controls */}
