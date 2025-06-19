@@ -84,7 +84,7 @@ const TechStack: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-24 min-h-screen overflow-hidden">
+    <section className="py-16 sm:py-24 md:min-h-screen overflow-hidden" id='skills'>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
@@ -97,13 +97,13 @@ const TechStack: React.FC = () => {
 
         <div
           ref={containerRef}
-          className="relative h-96 sm:h-[500px] lg:h-[600px] w-full"
+          className="relative h-96 sm:h-[300px] lg:h-[400px] w-full"
           style={{ perspective: '1000px' }}
         >
           {skills.map((skill, index) => (
             <div
               key={skill}
-              ref={(el) => (cardsRef.current[index] = el)}
+              ref={el => { cardsRef.current[index] = el; }}
               className="absolute transition-transform duration-300 ease-out will-change-transform"
               style={{
                 left: `${cardPositions[index].x}%`,
@@ -123,28 +123,6 @@ const TechStack: React.FC = () => {
               </div>
             </div>
           ))}
-
-          {/* Ambient particles */}
-          <div className="absolute inset-0 pointer-events-none">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 2}s`,
-                  animationDuration: `${2 + Math.random() * 3}s`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="text-center mt-8">
-          <p className="text-sm text-gray-400">
-            Move your cursor around to interact with the tech stack
-          </p>
         </div>
       </div>
     </section>

@@ -1,26 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const MacTerminal = () => {
+const MacTerminal = ({content}:{content:string}) => {
     const [typed,setTyped]= useState(false);
     const aboutcontent = useRef<HTMLDivElement | null>(null);
     const date = new Date();
-    const fullText = `Hello, I'm Renold Dickson — a full-stack developer passionate about crafting efficient, user-friendly apps.
-
-    I specialize in:
-    • Building modern web apps with React, Angular, and Next.js
-    • Performance optimization, SSR, and dynamic rendering
-    • State management using Redux, Zustand, NgRx, RxJS
-    
-    Professional highlights:
-    • Boosted Zenbasket’s performance by 80% at Centizen
-    • Built custom editors and achieved 90%+ Jest test coverage
-    • Contributed to Zen Studio – a no-code React website builder
-    
-    Personal Projects:
-    • Q-Docs – a static documentation generator
-    • Qooks Prompt – a Chrome extension for AI prompt navigation
-    
-    Let’s connect and create something truly amazing together!`;
     useLayoutEffect(() => {
         const el = aboutcontent.current;
         if (!el) return;
@@ -28,8 +11,8 @@ const MacTerminal = () => {
         let index = 0;
     
         const type = () => {
-          if (index < fullText.length) {
-            el.textContent += fullText[index];
+          if (index < content.length) {
+            el.textContent += content[index];
             index++;
             setTimeout(type, 15); // Speed here 👈 tweak it
           }

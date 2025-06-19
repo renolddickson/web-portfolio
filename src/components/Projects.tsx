@@ -157,13 +157,13 @@ const Projects: React.FC = () => {
         ref={svgRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
       >
-        <circle
+        {/* <circle
           className="central-node"
           cx={containerRef.current?.getBoundingClientRect().width / 2 || 0}
           cy="100"
           r="10"
           fill="#10B981"
-        />
+        /> */}
         {projects.map((_, i) => (
           <path
             key={i}

@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <div className="relative overflow-hidden pt-12" id="home">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center py-8 md:py-16 min-h-[80vh] z-10 relative">
+        <div className="flex flex-col md:flex-row items-center py-24 md:py-16 min-h-[80vh] z-10 relative">
           <div className="w-full md:w-1/2 space-y-4 md:space-y-6">
             <h1 className="text-3xl md:text-5xl font-black">
               Hi<span className="text-red-500">,</span> I'm
@@ -25,9 +25,11 @@ const Hero = () => {
                 </div>
               </button>
 
+              <a href="assets/Antony Renold Dickson - Frontend Developer - 2025.pdf" download={true}>
               <button className="px-6 py-2 border border-black text-black rounded-full transition duration-300 cursor-pointer hover:bg-gray-200">
                 GET CV
               </button>
+              </a>
             </div>
           </div>
 

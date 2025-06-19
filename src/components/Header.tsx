@@ -48,6 +48,7 @@ const Header = () => {
     const menuItems = [
         { text: "Home", delay: "delay-100", id:'home' },
         { text: "About", delay: "delay-200", id:'about' },
+        { text: "Skills", delay: "delay-100", id:'skills' },
         { text: "Projects", delay: "delay-300", id:'projects' },
         { text: "Contact", delay: "delay-400", id:'contact' },
     ];
