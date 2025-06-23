@@ -7,10 +7,7 @@ const Header = () => {
     const headerRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-      useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        let lastScroll = 0;
-    
+      useEffect(() => {    
         ScrollTrigger.create({
           start: 0,
           end: 'max',
@@ -33,8 +30,6 @@ const Header = () => {
                 ease: 'power2.out',
               });
             }
-    
-            lastScroll = scrollY;
           },
         });
       }, []);
