@@ -1,14 +1,56 @@
-import { useRef } from "react";
-import { Mail, Twitter, Instagram, Dribbble } from "lucide-react";
+import { useRef, useState } from "react";
+import { Mail, Instagram, Github, Linkedin } from "lucide-react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { postData } from "../utils/api";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+    const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
   const cardRef = useRef<HTMLDivElement>(null);
-
+  const socialMediaData = [{
+    icon: Github,
+    link: "https://dribbble.com/yourprofile",
+    title:'Github'
+  },
+  {
+    icon: Instagram,
+    link: "https://instagram.com/yourprofile",
+    title:'Instagram'
+  },
+  {
+    icon: Mail,
+    link: "mailto:renolddickson18@gmail.com",
+    title:'Email'
+},{
+    icon: Linkedin,
+    link: "https://linkedin.com/in/renolddickson",
+    title:'Linkedin'
+}]
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const result = await postData('contacts', formData);
+      console.log('Submitted successfully:', result);
+      // Optionally reset the form
+      setFormData({ name: '', email: '', message: '' });
+    } catch (err) {
+      console.error('Submission error:', err);
+    }
+  };
   useGSAP(() => {
     gsap.fromTo(".contact-card", 
     {
@@ -102,16 +144,17 @@ const Contact = () => {
 
           <h1 className="text-3xl font-extrabold text-white mt-6">Renold Dickson</h1>
           <p className="text-neutral-300 text-lg mt-2">Full Stack Developer</p>
-          <p className="text-neutral-400 mt-1">Chennai, Tamil Nadu, India</p>
+          <p className="text-neutral-400 mt-1">Tamil Nadu, India</p>
 
           <div className="flex justify-center gap-4 mt-6">
-            {[Dribbble, Twitter, Instagram, Mail].map((Icon, idx) => (
-              <button
-                key={idx}
+            {socialMediaData.map((item, idx) => (
+
+              <a
+                key={idx} href={item.link}
                 className="w-11 h-11 bg-neutral-700/60 hover:bg-neutral-600/60 text-neutral-300 hover:text-white rounded-xl transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-neutral-600/30"
               >
-                <Icon className="w-5 h-5" />
-              </button>
+                <item.icon className="w-5 h-5" />
+              </a>
             ))}
           </div>
 
@@ -127,21 +170,30 @@ const Contact = () => {
           <div className="space-y-5">
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Your Name"
               className="form-input w-full px-6 py-4 bg-neutral-700/40 border border-neutral-600/30 rounded-2xl text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 backdrop-blur-sm"
             />
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Your Email"
               className="form-input w-full px-6 py-4 bg-neutral-700/40 border border-neutral-600/30 rounded-2xl text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 backdrop-blur-sm"
             />
             <textarea
               rows={5}
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               placeholder="Write your message..."
               className="form-input w-full px-6 py-4 bg-neutral-700/40 border border-neutral-600/30 rounded-2xl text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 resize-none backdrop-blur-sm"
             ></textarea>
 
-            <button className="w-full bg-white hover:bg-gray-100 text-neutral-800 py-4 px-6 rounded-2xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02]">
+            <button className="w-full bg-white hover:bg-gray-100 text-neutral-800 py-4 px-6 rounded-2xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02]" onClick={handleSubmit}>
               Send Message
             </button>
           </div>
