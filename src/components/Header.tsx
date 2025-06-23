@@ -1,10 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollToSection } from "../utils/utils";
 import gsap from 'gsap';
-
-gsap.registerPlugin(ScrollToPlugin,ScrollTrigger);
 
 const Header = () => {
     const headerRef = useRef<HTMLDivElement>(null);

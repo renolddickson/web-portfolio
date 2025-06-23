@@ -1,27 +1,66 @@
-import { useEffect, useRef } from 'react';
-import MacTerminal from './MacTerminal'
+import { useRef } from 'react';
+import MacTerminal from './MacTerminal';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText'; // Import SplitText for text animation
 
-gsap.registerPlugin(ScrollTrigger);
-
+gsap.registerPlugin(SplitText);
 const AboutUs = () => {
-  const textRef = useRef<HTMLParagraphElement | null>(null);
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null); // Changed to div for SplitText compatibility
 
-    gsap.from(textRef.current, {
-      scrollTrigger: {
-        trigger: textRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
-      opacity: 0,
-      y: 30,
-      duration: 1,
-      ease: 'power2.out',
-    });
+  useGSAP(() => {
+    // Animate section to scroll over Hero, triggered by Hero
+    gsap.fromTo(
+      sectionRef.current,
+      { y: '100vh' },
+      {
+        y: '0vh',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#home', // Use Hero section as trigger
+          start: 'top top+=10%', // Start animation shortly after scrolling begins
+          end: 'bottom top', // End when Hero's bottom hits viewport top
+          scrub: true,
+          // markers: true, // Uncomment for debugging
+        },
+      }
+    );
+
+    // Fade-in animation for text content with SplitText
+    if (textRef.current) { // Check if SplitText is available
+      const splitText = new SplitText(textRef.current, { type: 'lines' });
+      const lines = splitText.lines;
+
+      gsap.fromTo(
+        lines,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current, // Use Hero section as trigger
+            start: 'top bottom', // Start animation shortly after scrolling begins
+            end: 'bottom top',
+          },
+          stagger: 0.06, // Adjusted for better visibility
+        }
+      );
+
+      // Cleanup SplitText on unmount
+      return () => {
+        splitText.revert();
+      };
+    } else {
+      console.error('SplitText plugin is not available. Check installation and registration.');
+    }
   }, []);
+
   const content = `Hello, I'm Renold Dickson — a full-stack developer passionate about crafting efficient, user-friendly apps.
 
     I specialize in:
@@ -39,18 +78,43 @@ const AboutUs = () => {
     • Qooks Prompt – a Chrome extension for AI prompt navigation
     
     Let’s connect and create something truly amazing together!`;
-  return (
-    <div className="p-10 min-h-screen flex items-center justify-center font-mono">
-      <div className='h-full hidden md:block'>
-        <MacTerminal content={content} />
-      </div>
-      <div className='block md:hidden'>
-        <h1 className='text-4xl font-bold mb-4 text-center'>About Us</h1>
-        <pre
-          className="text-lg transition-opacity duration-1000 whitespace-pre-wrap">{content}</pre>
-      </div>
-    </div>
-  )
-}
 
-export default AboutUs
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100vh] bg-white/80 backdrop-blur-md text-black flex items-center justify-center z-10 font-mono"
+      id="about"
+    >
+      <div className="container mx-auto px-0 sm:px-4 flex items-center justify-center h-full">
+        <div className="w-full h-fit">
+          <div className="hidden md:block">
+            <MacTerminal content={content} />
+          </div>
+          <div className="block md:hidden w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-4 py-8">
+            <div className="max-w-sm mx-auto">
+              {/* Header */}
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-blue-600 mb-2">
+                  About Me
+                </h1>
+                <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+              </div>
+                <div
+                  ref={textRef}
+                  className="text-base text-gray-800 font-medium leading-relaxed text-left space-y-4 transition-opacity duration-1000"
+                  dangerouslySetInnerHTML={{
+                    __html: content
+                      .split('\n\n')
+                      .map(paragraph => `<p class="mb-4 leading-relaxed">${paragraph.replace(/\n/g, '<br>')}</p>`)
+                      .join('')
+                  }}
+                />
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutUs;

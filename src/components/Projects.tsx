@@ -1,227 +1,90 @@
-'use client';
 import { useEffect, useRef } from 'react';
-import { ExternalLink, Github } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Project {
-  title: string;
-  description: string;
-  tech: string[];
-  color: string;
-}
-
-const projects: Project[] = [
-  {
-    title: 'E-Commerce Platform',
-    description: 'Full-stack e-commerce solution with modern UI/UX',
-    tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    color: '#34D399',
-  },
-  {
-    title: 'Design System',
-    description: 'Comprehensive design system for enterprise apps',
-    tech: ['Figma', 'React', 'Storybook'],
-    color: '#F472B6',
-  },
-  {
-    title: 'Mobile Banking App',
-    description: 'Secure mobile banking application with biometric auth',
-    tech: ['React Native', 'Firebase'],
-    color: '#60A5FA',
-  },
-  {
-    title: 'Analytics Dashboard',
-    description: 'Real-time dashboard with charts',
-    tech: ['Vue.js', 'D3.js'],
-    color: '#FBBF24',
-  },
+const projects = [
+  { id: 1, image: '/assets/project1.png', title: 'AI Teammate', url: '#' },
+  { id: 2, image: '/assets/project2.png', title: '3D Artwork', url: '#' },
 ];
 
-const Projects: React.FC = () => {
-  const containerRef = useRef<HTMLElement | null>(null);
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
+const ProjectSection = () => {
+  const sectionRef = useRef(null);
+  const pathRef = useRef(null);
 
   useEffect(() => {
-    if (!containerRef.current || !headerRef.current || !svgRef.current) return;
+    gsap.fromTo(pathRef.current, {
+      strokeDasharray: 1000,
+      strokeDashoffset: 1000,
+    }, {
+      strokeDashoffset: 0,
+      duration: 2,
+      ease: "power2.inOut",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 80%",
+      }
+    });
 
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>('.card');
-      const header = headerRef.current;
-      const containerBounds = containerRef.current.getBoundingClientRect();
-      const headerBounds = header.getBoundingClientRect();
-
-      const root = {
-        x: headerBounds.left + headerBounds.width / 2 - containerBounds.left,
-        y: headerBounds.top + headerBounds.height / 2 - containerBounds.top,
-      };
-
-      // Animate header
-      gsap.fromTo(
-        header,
-        { opacity: 0, y: -50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    gsap.utils.toArray(".project-card").forEach((el:any) => {
+      gsap.fromTo(el, {
+        opacity: 0,
+        y: 100,
+        rotateX: 25,
+        rotateY: 10,
+      }, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        rotateY: 0,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
         },
-      );
-
-      // Animate central node
-      gsap.fromTo(
-        '.central-node',
-        { scale: 0 },
-        {
-          scale: 1,
-          duration: 0.8,
-          ease: 'elastic.out(1, 0.5)',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 80%',
-            once: true,
-          },
-        },
-      );
-
-      // Animate curved paths and cards
-      cards.forEach((card, i) => {
-        const path = `.path-${i}`;
-        const el = card;
-
-        const cardBounds = el.getBoundingClientRect();
-        const cardCenter = {
-          x: cardBounds.left + cardBounds.width / 2 - containerBounds.left,
-          y: cardBounds.top + cardBounds.height / 2 - containerBounds.top,
-        };
-
-        // Create curved path using quadratic Bezier
-        const controlPoint = {
-          x: root.x + (cardCenter.x - root.x) * 0.5,
-          y: root.y + (cardCenter.y - root.y) * 0.7,
-        };
-
-        const pathD = `M${root.x},${root.y} Q${controlPoint.x},${controlPoint.y} ${cardCenter.x},${cardCenter.y}`;
-
-        // Set initial path
-        gsap.set(path, { attr: { d: `M${root.x},${root.y} Q${controlPoint.x},${controlPoint.y} ${root.x},${root.y}` } });
-
-        // Animate path
-        gsap.to(path, {
-          attr: { d: pathD },
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            once: true,
-          },
-          delay: i * 0.2,
-        });
-
-        // Card reveal animation
-        gsap.fromTo(
-          el,
-          { opacity: 0, scale: 0.7, y: 50 },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 80%',
-              once: true,
-            },
-            delay: i * 0.2 + 0.3,
-          },
-        );
+        duration: 1,
+        ease: "expo.out",
       });
-    }, containerRef);
-
-    return () => ctx.revert();
+    });
   }, []);
 
   return (
-    <section id="projects" className="relative bg-gray-50 py-24 overflow-hidden" ref={containerRef}>
-      <svg
-        ref={svgRef}
-        className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
-      >
-        {/* <circle
-          className="central-node"
-          cx={containerRef.current?.getBoundingClientRect().width / 2 || 0}
-          cy="100"
-          r="10"
-          fill="#10B981"
-        /> */}
-        {projects.map((_, i) => (
-          <path
-            key={i}
-            className={`path-${i}`}
-            stroke="#D1D5DB"
-            strokeWidth="2"
-            fill="none"
-          />
-        ))}
+    <section ref={sectionRef} className="relative py-20 bg-[#f8f9ff] text-black overflow-hidden">
+      {/* SVG Path */}
+      <svg className="absolute top-0 left-0 w-full h-64" viewBox="0 0 1000 200" fill="none">
+        <path
+          ref={pathRef}
+          d="M0,100 Q500,-50 1000,100"
+          stroke="#7b61ff"
+          strokeWidth="5"
+          fill="none"
+        />
       </svg>
 
-      <div className="text-center mb-16 relative z-10" ref={headerRef}>
-        <h2 className="text-5xl font-bold text-gray-900 tracking-tight">
-          Featured Projects
-        </h2>
-        <p className="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">
-          Explore a collection of innovative projects showcasing creativity and technical excellence
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto relative z-10">
-        {projects.map((project, i) => (
-          <div
-            key={i}
-            className="card bg-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300"
-            style={{ borderLeft: `4px solid ${project.color}` }}
-          >
-            <h3 className="text-2xl font-semibold text-gray-900 mb-3">{project.title}</h3>
-            <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.tech.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <a
-                href="#"
-                className="flex-1 bg-gray-900 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-sm hover:bg-gray-800 transition-colors"
-              >
-                View Project <ExternalLink className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Github className="w-5 h-5 text-gray-700" />
-              </a>
-            </div>
-          </div>
-        ))}
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        <h2 className="text-5xl font-bold mb-16">Featured Projects</h2>
+        <div className="grid sm:grid-cols-2 gap-10">
+          {projects.map((project) => (
+            <a
+              href={project.url}
+              key={project.id}
+              className="project-card project-hover relative rounded-3xl overflow-hidden backdrop-blur-xl border border-white/20 bg-white/10 hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-80 object-cover hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute bottom-0 left-0 w-full p-6 bg-white/50 backdrop-blur-sm text-black">
+                <h3 className="text-xl font-semibold">{project.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
-export default Projects;
+export default ProjectSection;

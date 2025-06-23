@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// import gsap from 'gsap';
+// import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+// gsap.registerPlugin(ScrollTrigger);
 const MacTerminal = ({content}:{content:string}) => {
     const [typed,setTyped]= useState(false);
     const aboutcontent = useRef<HTMLDivElement | null>(null);
@@ -64,7 +64,7 @@ const MacTerminal = ({content}:{content:string}) => {
                     </div>
                     <div className="w-14"></div>
                 </div>
-                <div className="p-8 text-sm text-gray-800 bg-white h-112 overflow-auto">
+                <div className="p-4 text-sm text-gray-800 bg-white h-112 overflow-auto">
                     <div className="mb-2">
                         <span>Last login: {formatter.format(date)} on ttys003</span>
                     </div>
