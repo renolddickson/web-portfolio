@@ -16,9 +16,8 @@ const TechStack: React.FC = () => {
   ).current;
 
   const skills: string[] = [
-    'React', 'Node.js', 'TypeScript', 'Python', 'MongoDB', 'PostgreSQL',
-    'AWS', 'Docker', 'GraphQL', 'Next.js', 'Vue.js', 'Express',
-    'JavaScript', 'CSS', 'HTML', 'Git', 'Redis', 'Kubernetes'
+    'React', 'Node.js', 'TypeScript', 'PostgreSQL', 'GraphQL', 'Next.js', 'Express',
+    'JavaScript', 'CSS', 'HTML', 'Git', 'Shadcn', 'Tailwind CSS', 'GSAP', 'Redux', 'Firebase'
   ];
 
   // Function to check if positions overlap
