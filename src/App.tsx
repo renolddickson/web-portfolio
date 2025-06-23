@@ -1,7 +1,7 @@
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Contact from './components/Contact';
-import Projects from './components/Projects';
+// import Projects from './components/Projects';
 import Skills from './components/Skills';
 import AboutUs from './components/AboutUs';
 import gsap from 'gsap';
@@ -17,7 +17,7 @@ const App: React.FC = () => {
       <Hero />
       <AboutUs />
       <Skills />
-      <Projects />
+      {/* <Projects /> */}
       <Contact />
     </div>
   );
