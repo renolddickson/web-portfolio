@@ -1,38 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from "react";
 import { scrollToSection } from "../utils/utils";
-import gsap from 'gsap';
 
 const Header = () => {
-    const headerRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-      useEffect(() => {    
-        ScrollTrigger.create({
-          start: 0,
-          end: 'max',
-          onUpdate: (self) => {
-            const direction = self.direction; // 1 = down, -1 = up
-            const scrollY = self.scroll();
-    
-            if (!headerRef.current) return;
-    
-            if (scrollY <= 100 || direction === -1) {
-              gsap.to(headerRef.current, {
-                y: 0,
-                duration: 0.3,
-                ease: 'power2.out',
-              });
-            } else {
-              gsap.to(headerRef.current, {
-                y: '-100%',
-                duration: 0.3,
-                ease: 'power2.out',
-              });
-            }
-          },
-        });
-      }, []);
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
         document.body.style.overflow = isMenuOpen ? 'auto' : 'hidden';
@@ -45,7 +15,7 @@ const Header = () => {
         { text: "Contact", delay: "delay-400", id:'contact' },
     ];
     return (
-        <header className='fixed top-0 left-0 w-full flex justify-between items-center p-4 bg-white z-50 transition-transform duration-300' ref={headerRef}>
+        <header className='w-full flex justify-between items-center p-4 bg-white z-50 transition-transform duration-300'>
             <h3 className="text-2xl font-bold flex items-center space-x-1">
                 Ren
                 <span className="inline-block w-3 h-3 mt-2 bg-green-400 rounded-full"></span>
