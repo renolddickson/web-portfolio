@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_KEY);
 
-export const fetchData = async (table: string): Promise<any> => {
+export const fetchData = async<T = any> (table: string): Promise<T[]> => {
   const { data, error } = await supabase.from(table).select("*");
 
   if (error) {
