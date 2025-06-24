@@ -12,6 +12,8 @@ interface Projects {
   description: string;
   cover_image_url: string;
   live_link: string;
+  github_link: string;
+  technologies: string[];
 }
 
 const ProjectSection = () => {
@@ -161,20 +163,52 @@ const ProjectSection = () => {
 
             <div className="grid sm:grid-cols-2 gap-10">
               {projects.map((project) => (
-                <a
-                  href={project.live_link}
+                <div
                   key={project.id}
-                  className="project-card group relative rounded-3xl overflow-hidden backdrop-blur-xl border border-white/20 bg-white/10 hover:shadow-2xl transition-all duration-500"
+                  className="project-card rounded-3xl overflow-hidden border border-black/10 bg-white shadow-md p-4 space-y-4 transition-all duration-500 hover:shadow-2xl"
                 >
                   <img
                     src={project.cover_image_url}
                     alt={project.name}
-                    className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-60 object-cover rounded-xl"
                   />
-                  <div className="absolute bottom-0 left-0 w-full p-6 bg-white/50 backdrop-blur-sm text-black">
-                    <h3 className="text-xl font-semibold">{project.name}</h3>
+                  <h3 className="text-2xl font-semibold text-black">{project.name}</h3>
+                  <p className="text-black/80">{project.description}</p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="text-sm bg-black/10 text-black px-3 py-1 rounded-full"
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
-                </a>
+
+                  <div className="flex gap-4 pt-2">
+                    {project.live_link && (
+                      <a
+                        href={project.live_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        Live
+                      </a>
+                    )}
+                    {project.github_link && (
+                      <a
+                        href={project.github_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
