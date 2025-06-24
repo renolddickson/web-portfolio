@@ -196,7 +196,7 @@ const Skills: React.FC = () => {
   }, [loading, skills]);
 
   const SkeletonCard = () => (
-    <div className="px-4 py-2 bg-[#f8f9ff] animate-pulse rounded-lg w-24 h-6" />
+    <div className="px-4 py-2 bg-gray-200 animate-pulse rounded-lg w-24 h-6" />
   );
 
   return (

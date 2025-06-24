@@ -90,7 +90,7 @@ const AboutUs = () => {
           <div className="hidden md:block">
             <MacTerminal content={content} />
           </div>
-          <div className="block md:hidden w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-4 py-8">
+          <div className="block md:hidden w-full min-h-screen bg-[#f8f9ff] px-4 py-8">
             <div className="max-w-sm mx-auto">
               {/* Header */}
               <div className="mb-8">
