@@ -16,7 +16,7 @@ const Skills: React.FC = () => {
   const [skills, setSkills] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [cardPositions,setCardPositions] = useState<Position[]>([])
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const motionStrengths = useRef(
@@ -70,11 +70,10 @@ const Skills: React.FC = () => {
     return positions;
   };
 
-  const cardPositions = useRef<Position[]>([]);
 
   useEffect(() => {
     if (!loading && skills.length > 0) {
-      cardPositions.current = generatePositions();
+      setCardPositions(generatePositions())
     }
   }, [loading, skills]);
 
@@ -261,8 +260,8 @@ const Skills: React.FC = () => {
                   }}
                   className="absolute transition-transform duration-300 ease-out will-change-transform"
                   style={{
-                    left: `${cardPositions.current[index]?.x ?? 50}%`,
-                    top: `${cardPositions.current[index]?.y ?? 50}%`,
+                    left: `${cardPositions[index]?.x ?? 50}%`,
+                    top: `${cardPositions[index]?.y ?? 50}%`,
                     transform: 'translate(-50%, -50%)',
                     zIndex: 10,
                   }}

@@ -93,11 +93,11 @@ const AboutUs = () => {
           <div className="block md:hidden w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-4 py-8">
             <div className="max-w-sm mx-auto">
               {/* Header */}
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-blue-600 mb-2">
+              <div className="mb-8">
+                <h1 className="text-3xl font-bold text-black mb-2">
                   About Me
                 </h1>
-                <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                <div className="w-16 h-1 bg-black"></div>
               </div>
                 <div
                   ref={textRef}

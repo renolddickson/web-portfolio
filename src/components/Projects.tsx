@@ -73,14 +73,14 @@ const ProjectSection = () => {
     const sectionEl = sectionRef.current!;
     animateScrollPath(pathVioletRef.current, sectionEl, {
       start: "top 80%",
-      end: "bottom-=150 bottom",
+      end: "bottom-=180 bottom",
       scrub: 0.6,
       delay: 0.2,
     });
 
     animateScrollPath(pathYellowRef.current, sectionEl, {
       start: "top bottom",
-      end: "bottom-=150 bottom",
+      end: "bottom-=160 bottom",
       scrub: 1.2,
     });
 
