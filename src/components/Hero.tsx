@@ -99,12 +99,12 @@ const Hero = () => {
         <div className="w-full md:w-1/2 flex justify-center mt-12 md:mt-0">
           <div
             ref={imageRef}
-            className="relative w-[280px] md:w-[350px] rounded-full bg-gray-200 p-4 md:p-8 shadow-md"
+            className="relative w-[280px] h-[280px] md:w-[350px] md:h-[350px] rounded-full bg-gray-200 p-4 md:p-8 shadow-md"
           >
             <img
               src="/assets/hero-image.png"
               alt="Renold Cartoon"
-              className="w-full rounded-full"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>

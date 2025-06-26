@@ -157,7 +157,9 @@ const Contact = () => {
           className={`w-full max-w-sm contact-card ${cardBg} backdrop-blur-xl rounded-3xl shadow-lg p-8 text-center`}
         >
           <div className="w-44 h-44 mx-auto rounded-full overflow-hidden bg-gradient-to-br from-emerald-500 to-violet-600 flex items-center justify-center">
-            <div className={`w-28 h-28 ${isDark ? 'bg-neutral-700' : 'bg-gray-300'} rounded-full`}></div>
+            <div className={`w-28 h-28 ${isDark ? 'bg-neutral-700' : 'bg-gray-300'} relative rounded-full`}>
+              <img className="scale-140" src="assets/contactus.png" alt="contactus" />
+            </div>
           </div>
 
           <h1 className="text-3xl font-extrabold mt-6">Renold Dickson</h1>

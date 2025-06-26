@@ -82,7 +82,7 @@ const AboutUs = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100vh] bg-white/80 backdrop-blur-md text-black flex items-center justify-center z-10 font-mono"
+      className="relative min-h-[100vh] bg-[#f8f9ff]/80 backdrop-blur-md text-black flex items-center justify-center z-10 font-mono"
       id="about"
     >
       <div className="container mx-auto px-0 sm:px-4 flex items-center justify-center h-full">
