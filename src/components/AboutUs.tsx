@@ -64,7 +64,7 @@ const AboutUs = () => {
   const content = `Hello, I'm Renold Dickson — a full-stack developer passionate about crafting efficient, user-friendly apps.
 
     I specialize in:
-    • Building modern web apps with React, Angular, and Next.js
+    • Building modern web apps with React, Angular
     • Performance optimization, SSR, and dynamic rendering
     • State management using Redux, Zustand, NgRx, RxJS
     
