@@ -87,7 +87,7 @@ const Hero = () => {
               <span className="absolute inset-0 bg-white scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 z-0" />
               <span className="relative z-10 group-hover:text-black">HIRE ME</span>
             </button>
-            <a href="/assets/Antony Renold Dickson - Frontend Developer - 2025.pdf" download>
+            <a href="/assets/Antony Renold Dickson.pdf" download>
               <button className="px-6 py-2 border border-black text-black rounded-full transition-all duration-300 hover:bg-black hover:text-white">
                 GET CV
               </button>
