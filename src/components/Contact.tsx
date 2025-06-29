@@ -15,9 +15,11 @@ const Contact = () => {
   });
 
   const [isDark, setIsDark] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState('');
+
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Detect dark mode based on class on html or body
   useEffect(() => {
     const hasDark = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark");
     setIsDark(hasDark);
@@ -40,54 +42,60 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFeedback('');
+
+    if (!formData.email.trim() || !formData.message.trim()) {
+      setFeedback("Email and message are required.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const result = await postData('contacts', formData);
       console.log('Submitted successfully:', result);
       setFormData({ name: '', email: '', message: '' });
+      setFeedback("Message sent successfully!");
     } catch (err) {
       console.error('Submission error:', err);
+      setFeedback("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useGSAP(() => {
-    gsap.fromTo(".contact-card",
-      {
-        opacity: 0,
-        y: 50,
+    gsap.fromTo(".contact-card", {
+      opacity: 0,
+      y: 50,
+    }, {
+      scrollTrigger: {
+        trigger: ".contact-card",
+        start: "top 80%",
+        toggleActions: "play none none none",
       },
-      {
-        scrollTrigger: {
-          trigger: ".contact-card",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-      }
-    );
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "power3.out",
+    });
 
-    gsap.fromTo(".form-input",
-      {
-        opacity: 0,
-        x: 40,
+    gsap.fromTo(".form-input", {
+      opacity: 0,
+      x: 40,
+    }, {
+      scrollTrigger: {
+        trigger: ".form-input",
+        start: "top 85%",
+        toggleActions: "play none none none",
       },
-      {
-        scrollTrigger: {
-          trigger: ".form-input",
-          start: "top 85%",
-          toggleActions: "play none none none",
-        },
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.2,
-      }
-    );
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      stagger: 0.2,
+    });
 
-    const card: HTMLDivElement | null = cardRef.current;
+    const card = cardRef.current;
     if (!card) return;
 
     const onMouseMove = (e: MouseEvent) => {
@@ -134,12 +142,8 @@ const Contact = () => {
     ? "bg-neutral-700/40 border-neutral-600/30 text-white placeholder-neutral-400"
     : "bg-gray-100 border-gray-300 text-black placeholder-gray-500";
 
-  const blurBg1 = isDark
-    ? "bg-emerald-400/10"
-    : "bg-emerald-300/20";
-  const blurBg2 = isDark
-    ? "bg-violet-400/10"
-    : "bg-violet-300/20";
+  const blurBg1 = isDark ? "bg-emerald-400/10" : "bg-emerald-300/20";
+  const blurBg2 = isDark ? "bg-violet-400/10" : "bg-violet-300/20";
 
   return (
     <section
@@ -187,7 +191,7 @@ const Contact = () => {
         <div className={`w-full max-w-md ${cardBg} backdrop-blur-xl rounded-3xl shadow-lg p-8`}>
           <h2 className="text-3xl font-bold text-center mb-6">Say Hello</h2>
 
-          <div className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <input
               type="text"
               name="name"
@@ -201,7 +205,8 @@ const Contact = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Your Email"
+              placeholder="Your Email *"
+              required
               className={`form-input w-full px-6 py-4 ${inputBg} rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 backdrop-blur-sm`}
             />
             <textarea
@@ -209,17 +214,28 @@ const Contact = () => {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Write your message..."
+              placeholder="Write your message... *"
+              required
               className={`form-input w-full px-6 py-4 ${inputBg} rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all duration-300 resize-none backdrop-blur-sm`}
             ></textarea>
 
             <button
-              className={`w-full ${isDark ? "bg-white text-neutral-800" : "bg-neutral-800 text-white"} hover:opacity-90 py-4 px-6 rounded-2xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02]`}
-              onClick={handleSubmit}
+              type="submit"
+              disabled={loading}
+              className={`w-full ${isDark ? "bg-white text-neutral-800" : "bg-neutral-800 text-white"} hover:opacity-90 py-4 px-6 rounded-2xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-60`}
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
-          </div>
+
+            {loading && (
+              <div className="text-center text-sm text-emerald-500 animate-pulse">Sending message...</div>
+            )}
+            {feedback && (
+              <div className={`text-center text-sm ${feedback.includes("success") ? "text-emerald-500" : "text-red-500"}`}>
+                {feedback}
+              </div>
+            )}
+          </form>
         </div>
       </div>
 
